@@ -1,7 +1,5 @@
 export default function Home() {
   return (
-    <div className="text-3xl text-green-600 font-bold">
-      Tailwind is working!
-    </div>
+    <h1 className="text-2xl font-bold">Home Page</h1>
   );
 }
