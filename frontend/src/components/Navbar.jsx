@@ -11,15 +11,24 @@ export default function Navbar() {
           EventPlanner
         </Link>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-6">
           <Link to="/" className="hover:text-gray-300">
             Home
+          </Link>
+          <Link to="/events" className="hover:text-gray-300">
+            Events
           </Link>
           
           {isAuthenticated ? (
             <>
+              <Link to="/dashboard" className="hover:text-gray-300">
+                Dashboard
+              </Link>
+              <Link to="/profile" className="hover:text-gray-300">
+                Profile
+              </Link>
               <span className="text-gray-300">
-                Welcome, {user.username}!
+                Hi, {user.username}!
               </span>
               <button
                 onClick={logout}
