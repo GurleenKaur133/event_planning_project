@@ -14,9 +14,15 @@ require('./config/db');
 // Routes
 const testRoute = require('./routes/test.route');
 const authRoute = require('./routes/auth.route');
+const eventRoute = require('./routes/event.route');
+const venueRoute = require('./routes/venue.route');
+const attendeeRoute = require('./routes/attendee.route');
 
 app.use('/api', testRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/events', eventRoute);
+app.use('/api/venues', venueRoute);
+app.use('/api/attendees', attendeeRoute);
 
 app.get('/', (req, res) => {
   res.send("Backend API is running.");
