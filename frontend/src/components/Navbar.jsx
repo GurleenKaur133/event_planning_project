@@ -18,6 +18,9 @@ export default function Navbar() {
           <Link to="/events" className="hover:text-gray-300">
             Events
           </Link>
+          <Link to="/venues" className="hover:text-gray-300">
+            Venues
+          </Link>
           
           {isAuthenticated ? (
             <>
