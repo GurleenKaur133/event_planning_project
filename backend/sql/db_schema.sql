@@ -203,3 +203,16 @@ INSERT INTO attendees (user_id, event_id, rsvp_status) VALUES
 (1, 1, 'yes'),
 (1, 2, 'maybe'),
 (1, 3, 'yes');
+ 
+ // Important Queries for everyone 
+-- Add missing columns to users table
+ALTER TABLE users ADD COLUMN username VARCHAR(50) UNIQUE AFTER id;
+ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT true AFTER role;
+ALTER TABLE users ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER created_at;
+
+-- Update role enum to include 'organizer'
+ALTER TABLE users MODIFY COLUMN role ENUM('user', 'admin', 'organizer') DEFAULT 'user';
+
+-- Create indexes
+CREATE INDEX idx_email ON users(email);
+CREATE INDEX idx_username ON users(username);

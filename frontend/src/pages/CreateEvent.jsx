@@ -1,20 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import eventService from '../services/eventService';
+import venueService from '../services/venueService';
 import toast from 'react-hot-toast';
 
 export default function CreateEvent() {
   const navigate = useNavigate();
   const { user } = useAuth();
   
+  const [venues, setVenues] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     date: '',
     time: '',
     venue_id: '',
-    capacity: ''
+    status: 'published'
   });
+
+  useEffect(() => {
+    fetchVenues();
+  }, []);
+
+  const fetchVenues = async () => {
+    try {
+      const response = await venueService.getAllVenues();
+      setVenues(response.data);
+    } catch (error) {
+      toast.error('Failed to load venues');
+      console.error('Fetch venues error:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,10 +44,37 @@ export default function CreateEvent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: API call to create event
-    toast.success('Event created successfully!');
-    navigate('/events');
+    setLoading(true);
+
+    try {
+      // Combine date and time into datetime format
+      const dateTime = `${formData.date}T${formData.time}:00`;
+      
+      const eventData = {
+        title: formData.title,
+        description: formData.description,
+        date_time: dateTime,
+        venue_id: parseInt(formData.venue_id),
+        status: formData.status
+      };
+
+      await eventService.createEvent(eventData);
+      toast.success('Event created successfully!');
+      navigate('/events');
+    } catch (error) {
+      const errorMessage = error.response?.data?.errors?.[0]?.message || 
+                          error.response?.data?.message || 
+                          'Failed to create event';
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  // Get tomorrow's date as minimum date
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split('T')[0];
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -65,7 +110,7 @@ export default function CreateEvent() {
               value={formData.description}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Describe your event"
+              placeholder="Describe your event (minimum 10 characters)"
             />
           </div>
 
@@ -81,7 +126,7 @@ export default function CreateEvent() {
                 required
                 value={formData.date}
                 onChange={handleChange}
-                min={new Date().toISOString().split('T')[0]}
+                min={minDate}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -115,20 +160,37 @@ export default function CreateEvent() {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select a venue</option>
-              <option value="1">Grand Conference Hall</option>
-              <option value="2">Tech Innovation Center</option>
-              <option value="3">Outdoor Amphitheater</option>
-              <option value="4">Small Meeting Room A</option>
-              <option value="5">Virtual Event Space</option>
+              {venues.map(venue => (
+                <option key={venue.id} value={venue.id}>
+                  {venue.name} (Capacity: {venue.capacity})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+              Status
+            </label>
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
             </select>
           </div>
 
           <div className="flex gap-4">
             <button
               type="submit"
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              disabled={loading}
+              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Create Event
+              {loading ? 'Creating...' : 'Create Event'}
             </button>
             <button
               type="button"

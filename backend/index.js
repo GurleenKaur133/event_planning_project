@@ -11,6 +11,14 @@ app.use(express.json());
 // DB connection
 require('./config/db');
 
+const corsOptions = {
+  origin: '*', // Allow all origins in development
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
 // Routes
 const testRoute = require('./routes/test.route');
 const authRoute = require('./routes/auth.route');

@@ -24,6 +24,12 @@ export default function Navbar() {
               <Link to="/dashboard" className="hover:text-gray-300">
                 Dashboard
               </Link>
+              <Link to="/my-events" className="hover:text-gray-300">
+                My Events
+              </Link>
+              <Link to="/my-rsvps" className="hover:text-gray-300">
+                My RSVPs
+              </Link>
               <Link to="/profile" className="hover:text-gray-300">
                 Profile
               </Link>

@@ -7,6 +7,8 @@ import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import Events from './pages/Events'
 import CreateEvent from './pages/CreateEvent'
+import MyEvents from './pages/MyEvents'
+import MyRSVPs from './pages/MyRSVPs'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import { Toaster } from 'react-hot-toast'
@@ -39,6 +41,16 @@ export default function App() {
             <Route path="/create-event" element={
               <ProtectedRoute>
                 <CreateEvent />
+              </ProtectedRoute>
+            } />
+            <Route path="/my-events" element={
+              <ProtectedRoute>
+                <MyEvents />
+              </ProtectedRoute>
+            } />
+            <Route path="/my-rsvps" element={
+              <ProtectedRoute>
+                <MyRSVPs />
               </ProtectedRoute>
             } />
           </Routes>
