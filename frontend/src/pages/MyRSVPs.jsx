@@ -18,7 +18,6 @@ export default function MyRSVPs() {
       setRsvps(response.data);
     } catch (error) {
       toast.error('Failed to load your RSVPs');
-      console.error('Fetch RSVPs error:', error);
     } finally {
       setLoading(false);
     }
@@ -29,7 +28,7 @@ export default function MyRSVPs() {
       try {
         await attendeeService.cancelRsvp(eventId);
         toast.success('RSVP cancelled successfully');
-        fetchMyRsvps(); // Refresh the list
+        fetchMyRsvps();
       } catch (error) {
         toast.error(error.response?.data?.message || 'Failed to cancel RSVP');
       }
@@ -37,122 +36,116 @@ export default function MyRSVPs() {
   };
 
   const formatDate = (dateTime) => {
-    return new Date(dateTime).toLocaleDateString('en-US', {
+    return new Date(dateTime).toLocaleString('en-US', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
       hour: 'numeric',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
-  const getRsvpStatusColor = (status) => {
-    const colors = {
-      yes: 'bg-green-100 text-green-800',
-      no: 'bg-red-100 text-red-800',
-      maybe: 'bg-yellow-100 text-yellow-800',
-      waitlist: 'bg-purple-100 text-purple-800'
+  const badgeClass = (status) => {
+    const map = {
+      yes: 'bg-success-subtle text-success',
+      no: 'bg-danger-subtle text-danger',
+      maybe: 'bg-warning-subtle text-warning',
+      waitlist: 'bg-secondary-subtle text-secondary',
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return `badge rounded-pill px-3 py-2 fw-medium ${map[status] || 'bg-light text-dark'}`;
   };
+
+  const currentRsvps = activeTab === 'upcoming' ? rsvps.upcoming : rsvps.past;
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+        <div className="spinner-border text-primary" role="status" />
       </div>
     );
   }
 
-  const currentRsvps = activeTab === 'upcoming' ? rsvps.upcoming : rsvps.past;
-
   return (
-    <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">My RSVPs</h1>
+    <div className="container py-5" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <h2 className="mb-4 fw-bold">My RSVPs</h2>
 
-      {/* Tabs */}
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="-mb-px flex space-x-8">
+      {/* Nav Tabs */}
+      <ul className="nav nav-tabs mb-4">
+        <li className="nav-item">
           <button
+            className={`nav-link ${activeTab === 'upcoming' ? 'active' : ''}`}
             onClick={() => setActiveTab('upcoming')}
-            className={`py-2 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'upcoming'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
           >
             Upcoming Events ({rsvps.upcoming.length})
           </button>
+        </li>
+        <li className="nav-item">
           <button
+            className={`nav-link ${activeTab === 'past' ? 'active' : ''}`}
             onClick={() => setActiveTab('past')}
-            className={`py-2 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'past'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
           >
             Past Events ({rsvps.past.length})
           </button>
-        </nav>
-      </div>
+        </li>
+      </ul>
 
+      {/* No RSVPs */}
       {currentRsvps.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg shadow">
-          <p className="text-gray-600 mb-4">
-            {activeTab === 'upcoming' 
+        <div className="card p-5 text-center">
+          <p className="text-muted mb-3">
+            {activeTab === 'upcoming'
               ? "You haven't RSVP'd to any upcoming events yet."
               : "You haven't attended any events yet."}
           </p>
           {activeTab === 'upcoming' && (
             <Link
               to="/events"
-              className="text-blue-600 hover:text-blue-700"
+              className="btn"
+              style={{
+                backgroundColor: 'var(--color-primary)',
+                color: 'white',
+                border: 'none',
+              }}
             >
               Browse upcoming events
             </Link>
+
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="row g-4">
           {currentRsvps.map((rsvp) => (
-            <div key={rsvp.event_id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold">{rsvp.title}</h3>
-                  <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getRsvpStatusColor(rsvp.rsvp_status)}`}>
-                    {rsvp.rsvp_status.toUpperCase()}
-                  </span>
-                </div>
-                
-                <p className="text-gray-600 mb-4 line-clamp-2">{rsvp.description}</p>
-                
-                <div className="space-y-2 text-sm text-gray-600">
-                  <p>
-                    <span className="font-medium">Date:</span> {formatDate(rsvp.date_time)}
-                  </p>
-                  <p>
-                    <span className="font-medium">Venue:</span> {rsvp.venue_name}
-                  </p>
-                  <p>
-                    <span className="font-medium">Location:</span> {rsvp.venue_location}
-                  </p>
-                </div>
+            <div key={rsvp.event_id} className="col-md-6">
+              <div className="card shadow-sm h-100">
+                <div className="card-body d-flex flex-column">
+                  <div className="d-flex justify-content-between align-items-start mb-2">
+                    <h5 className="card-title">{rsvp.title}</h5>
+                    <span className={badgeClass(rsvp.rsvp_status)}>
+                      {rsvp.rsvp_status.toUpperCase()}
+                    </span>
+                  </div>
 
-                <div className="mt-4 flex gap-2">
-                  <Link
-                    to={`/events/${rsvp.event_id}`}
-                    className="flex-1 text-center bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
-                  >
-                    View Details
-                  </Link>
-                  {activeTab === 'upcoming' && rsvp.event_status === 'published' && (
-                    <button
-                      onClick={() => handleCancelRsvp(rsvp.event_id, rsvp.title)}
-                      className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
-                    >
-                      Cancel RSVP
-                    </button>
-                  )}
+                  <p className="text-muted small mb-3">{rsvp.description}</p>
+
+                  <ul className="list-unstyled mb-3">
+                    <li><strong>Date:</strong> {formatDate(rsvp.date_time)}</li>
+                    <li><strong>Venue:</strong> {rsvp.venue_name}</li>
+                    <li><strong>Location:</strong> {rsvp.venue_location}</li>
+                  </ul>
+
+                  <div className="mt-auto d-flex gap-2">
+                    <Link to={`/events/${rsvp.event_id}`} className="btn btn-outline-secondary w-50">
+                      View Details
+                    </Link>
+                    {activeTab === 'upcoming' && rsvp.event_status === 'published' && (
+                      <button
+                        onClick={() => handleCancelRsvp(rsvp.event_id, rsvp.title)}
+                        className="btn btn-danger w-50"
+                      >
+                        Cancel RSVP
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

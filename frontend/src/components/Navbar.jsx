@@ -5,63 +5,73 @@ export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold hover:text-gray-300">
+    <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: '#B29079', zIndex: 1030 }}>
+      <div className="container">
+        <Link className="navbar-brand text-white fw-bold" to="/">
           EventPlanner
         </Link>
-        
-        <div className="flex items-center space-x-6">
-          <Link to="/" className="hover:text-gray-300">
-            Home
-          </Link>
-          <Link to="/events" className="hover:text-gray-300">
-            Events
-          </Link>
-          <Link to="/venues" className="hover:text-gray-300">
-            Venues
-          </Link>
-          
-          {isAuthenticated ? (
-            <>
-              <Link to="/dashboard" className="hover:text-gray-300">
-                Dashboard
-              </Link>
-              <Link to="/my-events" className="hover:text-gray-300">
-                My Events
-              </Link>
-              <Link to="/my-rsvps" className="hover:text-gray-300">
-                My RSVPs
-              </Link>
-              <Link to="/profile" className="hover:text-gray-300">
-                Profile
-              </Link>
-              <span className="text-gray-300">
-                Hi, {user.username}!
-              </span>
-              <button
-                onClick={logout}
-                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link 
-                to="/login" 
-                className="hover:text-gray-300"
-              >
-                Login
-              </Link>
-              <Link 
-                to="/register" 
-                className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Register
-              </Link>
-            </>
-          )}
+
+        <button
+          className="navbar-toggler text-white"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul className="navbar-nav align-items-center gap-2">
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/">Home</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/events">Events</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/venues">Venues</Link>
+            </li>
+
+            {isAuthenticated ? (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/dashboard">Dashboard</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/my-events">My Events</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/my-rsvps">My RSVPs</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/profile">Profile</Link>
+                </li>
+                <li className="nav-item">
+                  <span className="nav-link text-white small">Hi, {user.username}!</span>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="btn btn-sm btn-outline-light"
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link text-white" to="/login">Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="btn btn-sm btn-light text-dark" to="/register">Register</Link>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
       </div>
     </nav>

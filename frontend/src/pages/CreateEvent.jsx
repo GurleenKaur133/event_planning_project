@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 export default function CreateEvent() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  
+
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -47,9 +47,8 @@ export default function CreateEvent() {
     setLoading(true);
 
     try {
-      // Combine date and time into datetime format
       const dateTime = `${formData.date}T${formData.time}:00`;
-      
+
       const eventData = {
         title: formData.title,
         description: formData.description,
@@ -62,102 +61,93 @@ export default function CreateEvent() {
       toast.success('Event created successfully!');
       navigate('/events');
     } catch (error) {
-      const errorMessage = error.response?.data?.errors?.[0]?.message || 
-                          error.response?.data?.message || 
-                          'Failed to create event';
+      const errorMessage = error.response?.data?.errors?.[0]?.message ||
+        error.response?.data?.message ||
+        'Failed to create event';
       toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  // Get tomorrow's date as minimum date
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const minDate = tomorrow.toISOString().split('T')[0];
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Create New Event</h1>
-      
-      <div className="bg-white rounded-lg shadow p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-              Event Title *
-            </label>
+    <div className="container py-5" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <div className="mx-auto shadow p-5 rounded" style={{ backgroundColor: 'white', maxWidth: '650px', borderTop: '5px solid var(--color-primary)' }}>
+        <div className="d-flex align-items-center mb-4">
+          <i className="bi bi-calendar2-event-fill fs-3 me-2 text-primary"></i>
+          <h2 className="fw-bold mb-0">Create New Event</h2>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="title" className="form-label">Event Title *</label>
             <input
               type="text"
               id="title"
               name="title"
               required
+              className="form-control"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter event title"
             />
           </div>
 
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-              Description *
-            </label>
+          <div className="mb-3">
+            <label htmlFor="description" className="form-label">Description *</label>
             <textarea
               id="description"
               name="description"
+              rows="4"
               required
-              rows={4}
+              className="form-control"
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Describe your event (minimum 10 characters)"
-            />
+              placeholder="Describe your event"
+            ></textarea>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
-                Date *
-              </label>
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor="date" className="form-label">Date *</label>
               <input
                 type="date"
                 id="date"
                 name="date"
                 required
+                className="form-control"
                 value={formData.date}
                 onChange={handleChange}
                 min={minDate}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-
-            <div>
-              <label htmlFor="time" className="block text-sm font-medium text-gray-700 mb-1">
-                Time *
-              </label>
+            <div className="col-md-6 mb-3">
+              <label htmlFor="time" className="form-label">Time *</label>
               <input
                 type="time"
                 id="time"
                 name="time"
                 required
+                className="form-control"
                 value={formData.time}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
 
-          <div>
-            <label htmlFor="venue_id" className="block text-sm font-medium text-gray-700 mb-1">
-              Venue *
-            </label>
+          <div className="mb-3">
+            <label htmlFor="venue_id" className="form-label">Venue *</label>
             <select
               id="venue_id"
               name="venue_id"
+              className="form-select"
               required
               value={formData.venue_id}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select a venue</option>
               {venues.map(venue => (
@@ -168,34 +158,38 @@ export default function CreateEvent() {
             </select>
           </div>
 
-          <div>
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
-              Status
-            </label>
+          <div className="mb-4">
+            <label htmlFor="status" className="form-label">Status</label>
             <select
               id="status"
               name="status"
+              className="form-select"
               value={formData.status}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="published">Published</option>
               <option value="draft">Draft</option>
             </select>
           </div>
 
-          <div className="flex gap-4">
+          <div className="d-flex gap-3">
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn flex-fill"
+              style={{
+                backgroundColor: 'var(--color-primary)',
+                color: 'white',
+                border: 'none'
+              }}
             >
               {loading ? 'Creating...' : 'Create Event'}
             </button>
+
             <button
               type="button"
               onClick={() => navigate('/events')}
-              className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              className="btn flex-fill btn-outline-secondary"
             >
               Cancel
             </button>

@@ -9,7 +9,7 @@ export default function Login() {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  
+
   const { login } = useAuth();
 
   const handleChange = (e) => {
@@ -18,7 +18,6 @@ export default function Login() {
       ...prev,
       [name]: value
     }));
-    // Clear error for this field when user types
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -33,32 +32,31 @@ export default function Login() {
     setLoading(true);
 
     const result = await login(formData);
-    
+
     if (!result.success) {
-      // Handle validation errors from backend
       if (result.error === 'Invalid credentials') {
         setErrors({ general: 'Invalid email or password' });
       }
     }
-    
+
     setLoading(false);
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8">
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="auth-wrapper">
+      <div className="auth-card">
+        <h2>Login</h2>
+
+        <form onSubmit={handleSubmit}>
           {errors.general && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <div className="alert alert-danger" role="alert">
               {errors.general}
             </div>
           )}
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              Email ID
             </label>
             <input
               type="email"
@@ -67,13 +65,13 @@ export default function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-control custom-input"
               placeholder="your@email.com"
             />
           </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">
               Password
             </label>
             <input
@@ -83,7 +81,7 @@ export default function Login() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-control custom-input"
               placeholder="••••••••"
             />
           </div>
@@ -91,17 +89,14 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn btn-block"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-blue-600 hover:text-blue-500">
-            Register here
-          </Link>
+        <p className="mt-3">
+          Don’t have an account? <Link to="/register">Register here</Link>
         </p>
       </div>
     </div>
