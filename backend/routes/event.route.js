@@ -29,3 +29,4 @@ router.put('/:id', updateEventValidationRules(), validate, updateEvent);
 router.delete('/:id', deleteEvent);
 
 module.exports = router;
+//
