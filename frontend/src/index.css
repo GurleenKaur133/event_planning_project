@@ -1,3 +1,288 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Delius&family=Pinyon+Script&display=swap');
+
+
+:root {
+    --brandy-rose: #B29079;
+    --peach-cream: #EFE7DA;
+    --chalk-beige: #E1DACA;
+    --neutral: #C1B6A4;
+    --white-beige: #F6F5EC;
+    --color-bg: #E1DACA;
+    --color-primary: #B29079;
+    --color-primary: #B29079;
+    --color-primary-light: #E1DACA;
+    --color-primary-dark: #9b7b64;
+
+    --color-bg: #F6F5EC;
+    --color-card-bg: #ffffff;
+
+    --color-text-dark: #3a3a3a;
+    --color-text-light: #7a7a7a;
+
+}
+
+body {
+    scroll-padding-top: 80px;
+
+    /* adjust based on your navbar height */
+}
+
+
+.text-theme {
+    color: #B29079;
+}
+
+
+.btn-theme {
+    background-color: #B29079;
+    /* Brandy Rose */
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.btn-theme:hover {
+    background-color: #a1785e;
+    /* Slightly darker shade */
+    color: white;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: var(--color-primary-dark) !important;
+}
+
+
+/* Wrapper centers card */
+.auth-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--peach-cream), var(--chalk-beige));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Auth Card Style */
+.auth-card {
+    background-color: var(--white-beige);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(178, 144, 121, 0.2);
+    width: 100%;
+    max-width: 420px;
+}
+
+/* Heading */
+.auth-card h2 {
+    color: var(--brandy-rose);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+/* Label */
+.auth-card label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--brandy-rose);
+}
+
+/* Input */
+.auth-card input {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 2px solid var(--neutral);
+    background-color: transparent;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1.2rem;
+}
+
+.auth-card input:focus {
+    border-color: var(--brandy-rose);
+    outline: none;
+}
+
+/* Button */
+.auth-card button {
+    background-color: var(--brandy-rose);
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    padding: 0.6rem 1rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-card button:hover {
+    background-color: #a4765e;
+}
+
+/* Link */
+.auth-card a {
+    color: var(--brandy-rose);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.auth-card a:hover {
+    color: #a4765e;
+}
+
+/* Paragraph */
+.auth-card p {
+    text-align: center;
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: var(--brandy-rose);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    z-index: 1030;
+}
+
+.navbar .nav-link {
+    font-weight: 500;
+    color: white !important;
+    transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+    color: var(--white-beige) !important;
+}
+
+.navbar .navbar-brand {
+    color: white !important;
+    font-weight: 700;
+}
+
+.navbar .btn {
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navbar .btn:hover {
+    background-color: #d8b6a3;
+}
+
+
+
+.home-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--peach-cream), var(--chalk-beige));
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #2d2d2d;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 6rem 1rem 4rem;
+    /* ⬅️ increased top padding to make text visible */
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.home-title {
+    font-family: "Pinyon Script", cursive;
+    font-weight: 900;
+    font-size: 5rem;
+    font-style: normal;
+    color: #2d2d2d;
+}
+
+
+.btn {
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.btn-theme {
+    background-color: var(--brandy-rose);
+    color: white;
+}
+
+.btn-theme:hover {
+    background-color: #a4765e;
+}
+
+.btn-secondary {
+    background-color: var(--peach-cream);
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: var(--chalk-beige);
+}
+
+.features-section {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+}
+
+.feature-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 300px;
+    flex: 1;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.cta-section {
+    text-align: center;
+    background-color: var(--white-beige);
+    padding: 3rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}

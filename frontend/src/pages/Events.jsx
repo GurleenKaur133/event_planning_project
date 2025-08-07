@@ -30,7 +30,7 @@ export default function Events() {
     try {
       await attendeeService.rsvpToEvent(eventId, 'yes');
       toast.success('RSVP successful!');
-      fetchEvents(); // Refresh to update attendee count
+      fetchEvents();
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to RSVP');
     }
@@ -54,103 +54,101 @@ export default function Events() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+        <div className="spinner-border text-primary" role="status"></div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Upcoming Events</h1>
-        {isAuthenticated && (
-          <Link
-            to="/create-event"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Create Event
-          </Link>
-        )}
-      </div>
-
-      {events.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-600 mb-4">No events found.</p>
+    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', paddingTop: '2rem' }}>
+      <div className="container py-5">
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1 className="fw-bold">Upcoming Events</h1>
           {isAuthenticated && (
             <Link
               to="/create-event"
-              className="text-blue-600 hover:text-blue-700"
+              className="btn"
+              style={{
+                backgroundColor: 'var(--color-primary)',
+                color: 'white',
+                border: 'none'
+              }}
             >
-              Create the first event!
+              Create Event
             </Link>
+
           )}
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map(event => (
-            <div key={event.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-                <div className="space-y-2 text-gray-600">
-                  <p className="flex items-center">
-                    <span className="font-medium mr-2">Date:</span>
-                    {formatDate(event.date_time)}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="font-medium mr-2">Time:</span>
-                    {formatTime(event.date_time)}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="font-medium mr-2">Venue:</span>
-                    {event.venue_name}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="font-medium mr-2">Attendees:</span>
-                    {event.confirmed_attendees}
-                  </p>
-                  {event.status !== 'published' && (
-                    <p className="text-sm text-orange-600 font-medium">
-                      Status: {event.status}
-                    </p>
-                  )}
-                </div>
-                
-                <div className="mt-4 space-y-2">
-                  <Link
-                    to={`/events/${event.id}`}
-                    className="block w-full text-center bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
-                  >
-                    View Details
-                  </Link>
-                  {isAuthenticated && event.status === 'published' && (
-                    <button 
-                      onClick={() => handleRsvp(event.id)}
-                      className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      RSVP
-                    </button>
-                  )}
+
+        {events.length === 0 ? (
+          <div className="text-center py-5">
+            <p className="text-muted mb-3">No events found.</p>
+            {isAuthenticated && (
+              <Link
+                to="/create-event"
+                className="btn"
+                style={{
+                  backgroundColor: 'var(--color-primary)',
+                  color: 'white',
+                  border: 'none'
+                }}
+              >
+                Create the first event!
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div className="row g-4">
+            {events.map(event => (
+              <div key={event.id} className="col-sm-6 col-lg-4">
+                <div className="card h-100 shadow-sm border-0">
+                  <div className="card-body d-flex flex-column">
+                    <h5 className="card-title fw-semibold">{event.title}</h5>
+                    <ul className="list-unstyled text-muted mb-3">
+                      <li><strong>Date:</strong> {formatDate(event.date_time)}</li>
+                      <li><strong>Time:</strong> {formatTime(event.date_time)}</li>
+                      <li><strong>Venue:</strong> {event.venue_name}</li>
+                      <li><strong>Attendees:</strong> {event.confirmed_attendees}</li>
+                      {event.status !== 'published' && (
+                        <li className="text-warning"><strong>Status:</strong> {event.status}</li>
+                      )}
+                    </ul>
+                    <div className="mt-auto">
+                      <Link to={`/events/${event.id}`} className="btn btn-outline-secondary w-100 mb-2">
+                        View Details
+                      </Link>
+                      {isAuthenticated && event.status === 'published' && (
+                        <button
+                          onClick={() => handleRsvp(event.id)}
+                          className="btn w-100"
+                          style={{
+                            backgroundColor: 'var(--color-primary)',
+                            color: 'white',
+                            border: 'none'
+                          }}
+                        >
+                          RSVP
+                        </button>
+
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
 
-      {!isAuthenticated && events.length > 0 && (
-        <div className="mt-8 bg-blue-50 rounded-lg p-6 text-center">
-          <p className="text-gray-700 mb-4">
-            Sign in to create events and RSVP to upcoming events!
-          </p>
-          <Link
-            to="/login"
-            className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Login to Continue
-          </Link>
-        </div>
-      )}
+        {!isAuthenticated && events.length > 0 && (
+          <div className="alert alert-info text-center mt-5">
+            <p className="mb-3">Sign in to create events and RSVP to upcoming ones!</p>
+            <Link to="/login" className="btn btn-primary">
+              Login to Continue
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

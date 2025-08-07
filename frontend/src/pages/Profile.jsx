@@ -4,59 +4,87 @@ import { useState } from 'react';
 export default function Profile() {
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    username: user?.username || '',
+    email: user?.email || '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {
+    alert('Profile updated!');
+    setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to delete your account?')) {
+      alert('Account deleted!');
+    }
+  };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">My Profile</h1>
-      
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Profile Information</h2>
-            <button
-              onClick={() => setIsEditing(!isEditing)}
-              className="text-blue-600 hover:text-blue-700"
-            >
-              {isEditing ? 'Cancel' : 'Edit'}
-            </button>
-          </div>
+    <div className="container py-5" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <h1 className="mb-4">My Profile</h1>
+
+      <div className="card mb-4 shadow-sm">
+        <div className="card-header d-flex justify-content-between align-items-center">
+          <h5 className="mb-0">Profile Information</h5>
+          <button className="btn btn-sm btn-outline-primary" onClick={() => setIsEditing(!isEditing)}>
+            {isEditing ? 'Cancel' : 'Edit'}
+          </button>
         </div>
-        
-        <div className="p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-            <p className="text-lg">{user?.username}</p>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <p className="text-lg">{user?.email}</p>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
-            <p className="text-lg capitalize">{user?.role}</p>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Member Since</label>
-            <p className="text-lg">
-              {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
-            </p>
-          </div>
+        <div className="card-body">
+          {isEditing ? (
+            <>
+              <div className="mb-3">
+                <label className="form-label">Username</label>
+                <input
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Email</label>
+                <input
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <button className="btn btn-success" onClick={handleSave}>
+                Save Changes
+              </button>
+            </>
+          ) : (
+            <>
+              <p><strong>Username:</strong> {user?.username}</p>
+              <p><strong>Email:</strong> {user?.email}</p>
+              <p><strong>Role:</strong> {user?.role}</p>
+              <p><strong>Member Since:</strong> {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</p>
+            </>
+          )}
         </div>
       </div>
 
-      <div className="mt-8 bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold mb-4">Account Settings</h2>
-        <div className="space-y-3">
-          <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors">
+      <div className="card shadow-sm">
+        <div className="card-header">
+          <h5 className="mb-0">Account Settings</h5>
+        </div>
+        <div className="card-body d-flex flex-column gap-3">
+          <button className="btn btn-outline-secondary" onClick={() => alert('Change Password')}>
             Change Password
           </button>
-          <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors">
+          <button className="btn btn-outline-secondary" onClick={() => alert('Email Preferences')}>
             Email Preferences
           </button>
-          <button className="w-full text-left px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors">
+          <button className="btn btn-outline-danger" onClick={handleDelete}>
             Delete Account
           </button>
         </div>
