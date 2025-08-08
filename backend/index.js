@@ -35,12 +35,15 @@ const authRoute = require('./routes/auth.route');
 const eventRoute = require('./routes/event.route');
 const venueRoute = require('./routes/venue.route');
 const attendeeRoute = require('./routes/attendee.route');
+const userRoute = require('./routes/user.route');
 
 app.use('/api', testRoute);
 app.use('/api/auth', authLimiter, authRoute); // Apply auth limiter
 app.use('/api/events', eventRoute);
 app.use('/api/venues', venueRoute);
 app.use('/api/attendees', attendeeRoute);
+app.use('/api/users', userRoute);
+
 
 app.get('/', (req, res) => {
   res.send("Backend API is running.");

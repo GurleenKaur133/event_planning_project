@@ -9,6 +9,14 @@ const AppError = require('../utils/appError');
 const register = catchAsync(async (req, res, next) => {
   const { username, email, password, name } = req.body;
   
+  // Ensure name has a value (use username as fallback if name is not provided)
+  const userData = {
+    username,
+    email,
+    password,
+    name: name || username  // Use username as name if name is not provided
+  };
+  
   // Check if user already exists
   const userExistsByEmail = await User.findByEmail(email);
   const userExistsByUsername = await User.findByUsername(username);
@@ -21,8 +29,8 @@ const register = catchAsync(async (req, res, next) => {
     return next(new AppError('Username is already taken', 400));
   }
   
-  // Create user
-  const userId = await User.create({ username, email, password, name });
+  // Create user with userData object
+  const userId = await User.create(userData);
   
   // Get created user
   const user = await User.findById(userId);
