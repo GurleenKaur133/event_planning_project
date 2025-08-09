@@ -6,29 +6,22 @@ import attendeeService from '../services/attendeeService';
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const [stats, setStats] = useState({
-    myEvents: 0,
-    upcomingRsvps: 0,
-    totalRsvps: 0
-  });
+  const [stats, setStats] = useState({ myEvents: 0, upcomingRsvps: 0, totalRsvps: 0 });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
+  useEffect(() => { fetchStats(); }, []);
 
   const fetchStats = async () => {
     try {
       const eventsResponse = await eventService.getMyEvents();
-      const myEvents = eventsResponse.data.length;
-
       const rsvpsResponse = await attendeeService.getMyRsvps();
-      const upcomingRsvps = rsvpsResponse.data.upcoming.length;
-      const totalRsvps = rsvpsResponse.data.total;
-
-      setStats({ myEvents, upcomingRsvps, totalRsvps });
-    } catch (error) {
-      console.error('Failed to fetch stats:', error);
+      setStats({
+        myEvents: eventsResponse.data.length,
+        upcomingRsvps: rsvpsResponse.data.upcoming.length,
+        totalRsvps: rsvpsResponse.data.total
+      });
+    } catch (err) {
+      console.error('Failed to fetch stats:', err);
     } finally {
       setLoading(false);
     }
@@ -45,7 +38,10 @@ export default function Dashboard() {
   return (
     <div className="py-5" style={{ backgroundColor: '#EFE7DA', minHeight: '100vh' }}>
       <div className="container">
-        <h1 className="text-center fw-bold mb-4">Welcome back, {user?.username}!</h1>
+        {/* ONLY THIS LINE CHANGED */}
+        <h1 className="text-center fw-bold mb-4 headline-script">
+          Welcome back, {user?.username}!
+        </h1>
 
         {/* Stats Cards */}
         <div className="row g-4 mb-5">
@@ -55,9 +51,7 @@ export default function Dashboard() {
                 <h5 className="card-title text-secondary">My Events</h5>
                 <h2 className="text-theme fw-bold">{stats.myEvents}</h2>
                 <p className="text-muted">Events created</p>
-                <Link to="/my-events" className="btn btn-link p-0 text-theme">
-                  View all →
-                </Link>
+                <Link to="/my-events" className="btn btn-link p-0 text-theme">View all →</Link>
               </div>
             </div>
           </div>
@@ -68,9 +62,7 @@ export default function Dashboard() {
                 <h5 className="card-title text-secondary">Attending</h5>
                 <h2 className="text-theme fw-bold">{stats.upcomingRsvps}</h2>
                 <p className="text-muted">Upcoming events</p>
-                <Link to="/my-rsvps" className="btn btn-link p-0 text-theme">
-                  View RSVPs →
-                </Link>
+                <Link to="/my-rsvps" className="btn btn-link p-0 text-theme">View RSVPs →</Link>
               </div>
             </div>
           </div>
@@ -88,7 +80,6 @@ export default function Dashboard() {
 
         {/* Quick Actions & Profile */}
         <div className="row g-4">
-          {/* Quick Actions */}
           <div className="col-md-6">
             <div className="card shadow-sm h-100">
               <div className="card-body">
@@ -97,18 +88,13 @@ export default function Dashboard() {
                   <Link to="/create-event" className="btn text-white" style={{ backgroundColor: '#B29079' }}>
                     Create New Event
                   </Link>
-                  <Link to="/events" className="btn btn-outline-secondary">
-                    Browse Events
-                  </Link>
-                  <Link to="/my-events" className="btn btn-outline-secondary">
-                    Manage My Events
-                  </Link>
+                  <Link to="/events" className="btn btn-outline-secondary">Browse Events</Link>
+                  <Link to="/my-events" className="btn btn-outline-secondary">Manage My Events</Link>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Account Info */}
           <div className="col-md-6">
             <div className="card shadow-sm h-100">
               <div className="card-body">
@@ -122,9 +108,7 @@ export default function Dashboard() {
                 <p className="mb-1 text-muted mt-3">Role</p>
                 <p className="fw-semibold text-capitalize">{user?.role}</p>
 
-                <Link to="/profile" className="btn btn-link p-0 text-theme mt-2">
-                  Edit Profile →
-                </Link>
+                <Link to="/profile" className="btn btn-link p-0 text-theme mt-2">Edit Profile →</Link>
               </div>
             </div>
           </div>

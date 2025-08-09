@@ -137,6 +137,7 @@ export default function Profile() {
             <form onSubmit={handleProfileSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+
                 <input
                   type="text"
                   name="name"
@@ -188,6 +189,7 @@ export default function Profile() {
                 </button>
               </div>
             </form>
+
           ) : (
             <div className="space-y-4">
               <div>
@@ -299,6 +301,7 @@ export default function Profile() {
               Change Password
             </button>
           )}
+
         </div>
       </div>
     </div>

@@ -69,7 +69,11 @@ export default function MyEvents() {
     <div className="container py-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="fw-bold">My Events</h1>
-        <Link to="/create-event" className="btn btn-primary px-4">
+        <Link
+          to="/create-event"
+          className="btn text-white px-4"
+          style={{ backgroundColor: '#B29079', border: 'none' }}
+        >
           + Create New Event
         </Link>
       </div>
@@ -77,7 +81,11 @@ export default function MyEvents() {
       {events.length === 0 ? (
         <div className="bg-white shadow-sm rounded p-5 text-center">
           <p className="text-muted mb-3">You haven't created any events yet.</p>
-          <Link to="/create-event" className="btn btn-outline-primary">
+          <Link
+            to="/create-event"
+            className="btn"
+            style={{ backgroundColor: '#B29079', color: 'white', border: 'none' }}
+          >
             Create your first event
           </Link>
         </div>

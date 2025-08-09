@@ -1,5 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Delius&family=Pinyon+Script&display=swap');
 
+/* === Global Background Theme === */
+html,
+body,
+#root {
+    min-height: 100%;
+    background-color: var(--color-bg);
+    /* Use your theme color */
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+
+}
 
 :root {
     --brandy-rose: #B29079;
@@ -7,7 +22,7 @@
     --chalk-beige: #E1DACA;
     --neutral: #C1B6A4;
     --white-beige: #F6F5EC;
-    --color-bg: #E1DACA;
+    --color-bg: #B29079;
     --color-primary: #B29079;
     --color-primary: #B29079;
     --color-primary-light: #E1DACA;
@@ -205,7 +220,6 @@ body {
 .hero-section {
     text-align: center;
     padding: 6rem 1rem 4rem;
-    /* ⬅️ increased top padding to make text visible */
 }
 
 .hero-actions {
@@ -285,4 +299,8 @@ body {
     padding: 3rem 2rem;
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.headline-script {
+    font-family: "Pinyon Script", cursive;
 }
