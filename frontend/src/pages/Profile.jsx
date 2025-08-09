@@ -29,14 +29,21 @@ export default function Profile() {
     <div className="container py-5" style={{ backgroundColor: 'var(--color-bg)' }}>
       <h1 className="mb-4">My Profile</h1>
 
-      <div className="card mb-4 shadow-sm">
-        <div className="card-header d-flex justify-content-between align-items-center">
+      {/* Profile Info Card */}
+      <div className="card shadow-sm border-0 mb-4">
+        <div
+          className="card-header d-flex justify-content-between align-items-center text-white"
+          style={{ backgroundColor: 'var(--color-primary)' }}
+        >
           <h5 className="mb-0">Profile Information</h5>
-          <button className="btn btn-sm btn-outline-primary" onClick={() => setIsEditing(!isEditing)}>
+          <button
+            className="btn btn-sm btn-light"
+            onClick={() => setIsEditing(!isEditing)}
+          >
             {isEditing ? 'Cancel' : 'Edit'}
           </button>
         </div>
-        <div className="card-body">
+        <div className="card-body bg-white" style={{ backgroundColor: 'var(--color-bg)' }}>
           {isEditing ? (
             <>
               <div className="mb-3">
@@ -58,7 +65,11 @@ export default function Profile() {
                   className="form-control"
                 />
               </div>
-              <button className="btn btn-success" onClick={handleSave}>
+              <button
+                className="btn"
+                style={{ backgroundColor: 'var(--color-primary)', color: 'white' }}
+                onClick={handleSave}
+              >
                 Save Changes
               </button>
             </>
@@ -73,15 +84,19 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="card shadow-sm">
-        <div className="card-header">
+      {/* Account Settings Card */}
+      <div className="card shadow-sm border-0">
+        <div
+          className="card-header text-white"
+          style={{ backgroundColor: 'var(--color-primary-light)' }}
+        >
           <h5 className="mb-0">Account Settings</h5>
         </div>
-        <div className="card-body d-flex flex-column gap-3">
-          <button className="btn btn-outline-secondary" onClick={() => alert('Change Password')}>
+        <div className="card-body d-flex flex-column gap-3 bg-white">
+          <button className="btn btn-outline-dark" onClick={() => alert('Change Password')}>
             Change Password
           </button>
-          <button className="btn btn-outline-secondary" onClick={() => alert('Email Preferences')}>
+          <button className="btn btn-outline-dark" onClick={() => alert('Email Preferences')}>
             Email Preferences
           </button>
           <button className="btn btn-outline-danger" onClick={handleDelete}>

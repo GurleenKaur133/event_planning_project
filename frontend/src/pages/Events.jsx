@@ -61,7 +61,7 @@ export default function Events() {
   }
 
   return (
-    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', paddingTop: '2rem' }}>
+    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', paddingTop: '0.5rem' }}>
       <div className="container py-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h1 className="fw-bold">Upcoming Events</h1>

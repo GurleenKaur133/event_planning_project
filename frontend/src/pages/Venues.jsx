@@ -52,7 +52,7 @@ export default function Venues() {
   return (
     <div className="container py-5" style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh' }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold">Venues</h2>
+        <h1 className="fw-bold">Venues</h1>
         {isAuthenticated && canCreateVenue && (
           <Link
             to="/create-venue"
