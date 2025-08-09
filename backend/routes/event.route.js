@@ -14,6 +14,7 @@ const {
   updateEventValidationRules,
   validate
 } = require('../middleware/eventValidation.middleware');
+const { createLimiter } = require('../middleware/rateLimiter.middleware');
 
 // Public routes
 router.get('/', getAllEvents);
@@ -22,9 +23,10 @@ router.get('/:id', getEventById);
 // Protected routes
 router.use(protect); // All routes after this require authentication
 
-router.get('/user/my-events', getMyEvents); // Must be before /:id to avoid conflict
-router.post('/', createEventValidationRules(), validate, createEvent);
+router.get('/user/my-events', getMyEvents);
+router.post('/', createLimiter, createEventValidationRules(), validate, createEvent); // Added rate limiter
 router.put('/:id', updateEventValidationRules(), validate, updateEvent);
 router.delete('/:id', deleteEvent);
 
 module.exports = router;
+//
